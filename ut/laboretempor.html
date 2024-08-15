@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D3 Grid Example</title>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <style>
+        .grid line {
+            stroke: lightgrey;
+            shape-rendering: crispEdges;
+        }
+    </style>
+</head>
+<body>
+    <svg width="500" height="500"></svg>
+    <script>
+        const svg = d3.select("svg"),
+              width = +svg.attr("width"),
+              height = +svg.attr("height");
+
+        // Create scales
+        const xScale = d3.scaleLinear().domain([0, 10]).range([0, width]);
+        const yScale = d3.scaleLinear().domain([0, 10]).range([height, 0]);
+
+        // Create axes
+        const xAxis = d3.axisBottom(xScale).ticks(10);
+        const yAxis = d3.axisLeft(yScale).ticks(10);
+
+        // Append axes to SVG
+        svg.append("g")
+            .attr("transform", `translate(0, ${height})`)
+            .call(xAxis);
+        
+        svg.append("g")
+            .call(yAxis);
+
+        // Create gridlines
+        function makeXGridlines() {
+            return d3.axisBottom(xScale)
+                     .ticks(10);
+        }
+
+        function makeYGridlines() {
+            return d3.axisLeft(yScale)
+                     .ticks(10);
+        }
+
+        // Add X gridlines
+        svg.append("g")
+           .attr("class", "grid")
+           .attr("transform", `translate(0, ${height})`)
+           .call(makeXGridlines()
+                 .tickSize(-height)
+                 .tickFormat(""));
+
+        // Add Y gridlines
+        svg.append("g")
+           .attr("class", "grid")
+           .call(makeYGridlines()
+                 .tickSize(-width)
+                 .tickFormat(""));
+    </script>
+</body>
+</html>
